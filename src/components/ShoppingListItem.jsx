@@ -1,25 +1,50 @@
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import styled from 'styled-components';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { useState } from 'react';
 
 const ShoppingListItem = ({ product }) => {
+  const [productCount, setProductCount] = useState(0);
+
+  const incrementHandler = () => {
+    setProductCount((prevValue) => prevValue + 1);
+  };
+
+  const decrementHandler = () => {
+    if (productCount === 0) return;
+    setProductCount((prevValue) => prevValue - 1);
+  };
+
   return (
     <Grid
       item
       xs={12}
       sm={6}
-      md={3}
-      sx={{ maxWidth: '450px', margin: '0 auto' }}
+      md={4}
+      lg={3}
+      sx={{
+        maxWidth: '450px',
+      }}
     >
-      <Box sx={{ padding: 1 }}>
+      <Paper
+        variant="outlined"
+        sx={{
+          padding: 1,
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
         <StyledImage>
           <img src={product.image} alt={product.description} />
         </StyledImage>
-        <Typography variant="h6" component="h2">
+        <Typography variant="h6" component="h2" margin="8px 0">
           {product.title}
         </Typography>
         <Typography variant="subtitle2" component="h2">
@@ -36,7 +61,7 @@ const ShoppingListItem = ({ product }) => {
             marginTop: '2rem',
           }}
         >
-          <Button variant="outlined" size="small">
+          <Button variant="outlined" size="small" onClick={decrementHandler}>
             <RemoveIcon />
           </Button>
           <Button
@@ -48,13 +73,18 @@ const ShoppingListItem = ({ product }) => {
             }}
             disabled
           >
-            {0}
+            {productCount}
           </Button>
-          <Button sx={{ textAlign: 'center' }} variant="contained" size="small">
+          <Button
+            sx={{ textAlign: 'center' }}
+            variant="contained"
+            size="small"
+            onClick={incrementHandler}
+          >
             <AddIcon />
           </Button>
         </Box>
-      </Box>
+      </Paper>
     </Grid>
   );
 };

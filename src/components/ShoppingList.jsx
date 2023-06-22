@@ -1,29 +1,16 @@
 import Grid from '@mui/material/Grid';
-import { useEffect, useState } from 'react';
 import Container from '@mui/material/Container';
 import ShoppingListItem from './ShoppingListItem';
+import { useContext } from 'react';
+import { ShoppingContext } from '../context/context-shopping-cart';
 
 const ShoppingList = () => {
-  const [data, setData] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch('https://fakestoreapi.com/products?limit=4');
-      const products = await res.json();
-      setData(products);
-      setIsLoading(false);
-      console.log(products);
-    };
-
-    fetchData();
-  }, []);
-
+  const { products, isLoading } = useContext(ShoppingContext);
   return (
     <Container maxWidth="lg">
       <Grid container spacing={4}>
         {!isLoading &&
-          data.map((product) => (
+          products.map((product) => (
             <ShoppingListItem product={product} key={product.id} />
           ))}
       </Grid>

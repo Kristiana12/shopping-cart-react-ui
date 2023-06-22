@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import ShoppingProvider from './context/context-shopping-cart';
 
 //Fonts
 import '@fontsource/roboto/300.css';
@@ -15,6 +16,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <CssBaseline />
-    <App />
+    <ShoppingProvider>
+      <App />
+    </ShoppingProvider>
   </React.StrictMode>
 );

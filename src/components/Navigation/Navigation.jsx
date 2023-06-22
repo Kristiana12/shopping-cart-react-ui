@@ -1,22 +1,22 @@
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Badge from '@mui/material/Badge';
+import IconButton from '@mui/material/IconButton';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import styled from 'styled-components';
-import { useState } from 'react';
 
 const Navigation = () => {
-  const [cartProductNum, setCartProductNum] = useState(0);
-
   return (
     <Container maxWidth="lg">
       <StyledNavigation>
         <Typography variant="h5" component="h1">
           Shop.
         </Typography>
-        <Badge badgeContent={cartProductNum} color="primary">
-          <ShoppingCartIcon />
-        </Badge>
+        <IconButton aria-label="Toggle Cart" color="primary">
+          <Badge badgeContent={0} color="secondary">
+            <ShoppingCartIcon />
+          </Badge>
+        </IconButton>
       </StyledNavigation>
     </Container>
   );
