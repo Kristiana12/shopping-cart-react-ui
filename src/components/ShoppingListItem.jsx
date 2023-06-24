@@ -6,10 +6,18 @@ import Button from '@mui/material/Button';
 import styled from 'styled-components';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { useContext, forwardRef } from 'react';
+import { ShoppingContext } from '../context/context-shopping-cart';
+
+const ForwardRefButton = forwardRef((props, ref) => (
+  <Button ref={ref} {...props} />
+));
 
 const ShoppingListItem = ({ product }) => {
   const [productCount, setProductCount] = useState(0);
+  const refButtonAmount = useRef(null);
+  const { getProduct } = useContext(ShoppingContext);
 
   const incrementHandler = () => {
     setProductCount((prevValue) => prevValue + 1);
@@ -19,6 +27,12 @@ const ShoppingListItem = ({ product }) => {
     if (productCount === 0) return;
     setProductCount((prevValue) => prevValue - 1);
   };
+
+  function getProductHandler() {
+    const amount = Number(refButtonAmount.current.textContent);
+    const cartProduct = { ...product, amount };
+    getProduct(cartProduct);
+  }
 
   return (
     <Grid
@@ -34,7 +48,7 @@ const ShoppingListItem = ({ product }) => {
       <Paper
         variant="outlined"
         sx={{
-          padding: 1,
+          padding: '0.5rem 1rem 1.25rem',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
@@ -58,13 +72,15 @@ const ShoppingListItem = ({ product }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            marginTop: '2rem',
+            marginTop: 4,
+            marginBottom: 1,
           }}
         >
           <Button variant="outlined" size="small" onClick={decrementHandler}>
             <RemoveIcon />
           </Button>
-          <Button
+          <ForwardRefButton
+            ref={refButtonAmount}
             sx={{
               flex: 1,
               '&.Mui-disabled': {
@@ -74,7 +90,7 @@ const ShoppingListItem = ({ product }) => {
             disabled
           >
             {productCount}
-          </Button>
+          </ForwardRefButton>
           <Button
             sx={{ textAlign: 'center' }}
             variant="contained"
@@ -84,6 +100,9 @@ const ShoppingListItem = ({ product }) => {
             <AddIcon />
           </Button>
         </Box>
+        <Button variant="contained" onClick={getProductHandler}>
+          Add To Cart
+        </Button>
       </Paper>
     </Grid>
   );

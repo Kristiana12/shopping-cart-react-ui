@@ -1,32 +1,41 @@
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Container from '@mui/material/Container';
 import styled from 'styled-components';
+import { useContext } from 'react';
+import { ShoppingContext } from '../../context/context-shopping-cart';
+import CartItem from './CartItem';
+import Typography from '@mui/material/Typography';
 
 const Cart = () => {
+  const { cartProducts } = useContext(ShoppingContext);
+
+  const cartList = cartProducts.map((cartProduct, i) => (
+    <CartItem key={i} cartItem={cartProduct}></CartItem>
+  ));
+
+  if (cartProducts.length === 0) {
+    return (
+      <Container>
+        <Typography variant="h5" component="h1" sx={{ textAlign: 'center' }}>
+          Cart is empty!
+        </Typography>
+      </Container>
+    );
+  }
+
   return (
-    <StyledBox>
-      <Stack sapcing={4}>
-        <Box>
-          <h3>Image</h3>
-          <h4>Title of a product</h4>
-          <p>204,73</p>
-          <span>Add</span>
-          <span>Num</span>
-          <span>Rermove</span>
-        </Box>
-      </Stack>
-    </StyledBox>
+    <StyledContainer>
+      <Grid container spacing={9}>
+        {cartList}
+      </Grid>
+    </StyledContainer>
   );
 };
 
-const StyledBox = styled(Box)`
-  position: fixed;
-  background-color: #eee;
+const StyledContainer = styled(Container)`
+  padding-top: 100px;
   min-height: 100vh;
-  z-index: 100;
-  top: 0;
-  left: 100%;
-  width: 100%;
+  z-index: 10;
   text-align: center;
 `;
 

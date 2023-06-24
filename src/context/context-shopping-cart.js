@@ -1,26 +1,32 @@
 import { useEffect, useState, createContext, useReducer } from 'react';
 
 export const ShoppingContext = createContext(null);
+const intitalCart = {
+  cartAmount: 0,
+  cartProducts: [],
+};
 
-// const reducerShoppingCart = (state, action) => {
-//   switch (action.type) {
-//     case 'addToCart':
-//       return '';
-//     case 'removeFromCart':
-//       return '';
-//     default:
-//       return state;
-//   }
-// };
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'addToCart':
+      const sumProducts = state.cartAmount + action.payload.amount;
+      return {
+        cartProducts: [...state.cartProducts, action.payload],
+        cartAmount: sumProducts,
+      };
+    case 'removeFromCart':
+      return '';
+    default:
+      return state;
+  }
+};
 
 const ShoppingProvider = ({ children }) => {
   const [products, setProducts] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
-  // const [state, dispatchShoppingCart] = useReducer(reducerShoppingCart, {
-  //   cartAmount: 0,
-  //   cartProducts: {},
-  // });
+  const [state, dispatch] = useReducer(reducer, intitalCart);
+  const { cartProducts, cartAmount } = state;
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -33,11 +39,18 @@ const ShoppingProvider = ({ children }) => {
     fetchProducts();
   }, []);
 
+  const getProduct = (product) => {
+    if (product.amount > 0)
+      dispatch({ type: 'addToCart', payload: { ...product } });
+  };
+
   const shoppingData = {
     products,
     isLoading,
-    // cartAmount: state.cartAmount,
     setIsLoading,
+    getProduct,
+    cartAmount,
+    cartProducts,
   };
 
   return (

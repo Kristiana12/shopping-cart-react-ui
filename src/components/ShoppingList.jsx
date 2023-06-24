@@ -6,6 +6,7 @@ import { ShoppingContext } from '../context/context-shopping-cart';
 
 const ShoppingList = () => {
   const { products, isLoading } = useContext(ShoppingContext);
+
   return (
     <Container maxWidth="lg">
       <Grid container spacing={4}>
