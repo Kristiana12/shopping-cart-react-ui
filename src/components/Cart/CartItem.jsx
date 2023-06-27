@@ -4,7 +4,6 @@ import Paper from '@mui/material/Paper';
 import styled from 'styled-components';
 
 const CartItem = ({ cartItem }) => {
-  console.log(cartItem);
   return (
     <StyledGrid item container xs={12} md={6}>
       <Grid item container direction="column" xs={6}>
