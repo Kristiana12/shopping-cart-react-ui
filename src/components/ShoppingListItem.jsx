@@ -17,7 +17,7 @@ const ForwardRefButton = forwardRef((props, ref) => (
 const ShoppingListItem = ({ product }) => {
   const [productCount, setProductCount] = useState(0);
   const refButtonAmount = useRef(null);
-  const { getProduct } = useContext(ShoppingContext);
+  const { dispatch } = useContext(ShoppingContext);
 
   const incrementHandler = () => {
     setProductCount((prevValue) => prevValue + 1);
@@ -31,7 +31,7 @@ const ShoppingListItem = ({ product }) => {
   function getProductHandler() {
     const amount = Number(refButtonAmount.current.textContent);
     const cartProduct = { ...product, amount };
-    getProduct(cartProduct);
+    dispatch({ type: 'addToCart', payload: cartProduct });
   }
 
   return (
