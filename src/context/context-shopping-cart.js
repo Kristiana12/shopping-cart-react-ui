@@ -10,6 +10,23 @@ const reducer = (state, action) => {
   switch (action.type) {
     case 'addToCart':
       const sumProducts = state.cartAmount + action.payload.amount;
+
+      //Update the existing product in cart
+      const existingProductIndex = state.cartProducts.findIndex(
+        (product) => product.id === action.payload.id
+      );
+
+      if (existingProductIndex !== -1) {
+        const updatedCartProducts = [...state.cartProducts];
+        updatedCartProducts[existingProductIndex].amount +=
+          action.payload.amount;
+
+        return {
+          ...state,
+          cartProducts: updatedCartProducts,
+          cartAmount: sumProducts,
+        };
+      }
       return {
         cartProducts: [...state.cartProducts, action.payload],
         cartAmount: sumProducts,
@@ -40,8 +57,7 @@ const ShoppingProvider = ({ children }) => {
   }, []);
 
   const getProduct = (product) => {
-    if (product.amount > 0)
-      dispatch({ type: 'addToCart', payload: { ...product } });
+    if (product.amount > 0) dispatch({ type: 'addToCart', payload: product });
   };
 
   const shoppingData = {
